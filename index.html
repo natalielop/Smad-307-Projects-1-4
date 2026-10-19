@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!--
+    AI Use Disclosure:
+    Tool(s): Claude
+    Purpose: Helped provide inspiration for initial layout design in Project 2, and helped with the inverted triangle grid in the saved recipes section, week rotation of colors, and notebook and gingham patterns. For 3rd project, helped build the Bootstrap 5.3.8 container/row/column layout, choose and add the Bootstrap components (nav, list group, form, button, cards), and make small CSS changes so the components match my colors.
+    Human Role: I edited the AI code I took as inspiration and applied the helping code to my own layout after learning how to do it. I also made the final design decisions on everything
+    -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Daily Meal Planner">
+    <meta name="author" content="Natalie Lopresti">
+    <title>Daily Meal Planner</title>
+
+   <!-- Bootstrap v5.3.8 -->
+   <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+   <!-- END LOADING BOOTSTRAP CSS -->
+    
+   <!-- Custom styles - add your own CSS to this stylesheet -->
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    
+<div class="container">
+
+  <header>
+    <h1>Daily Meal Planner</h1>
+  </header>
+
+  <!-- Component 1: nav -->
+  <nav>
+    <ul class="nav justify-content-center">
+      <li class="nav-item"><a class="nav-link" href="#Today">Today's Meals</a></li>
+      <li class="nav-item"><a class="nav-link" href="#Week">This Week</a></li>
+      <li class="nav-item"><a class="nav-link" href="#Meal-planning">Meal Planning</a></li>
+      <li class="nav-item"><a class="nav-link" href="#Recipes">Saved Recipes</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <div class="row g-4 mb-5">
+
+      <div class="col-12 col-lg-6">
+        <section id="Today" class="h-100 mb-0">
+          <h2>Today's Meals</h2>
+          <!-- Component 2: list group -->
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Breakfast:</strong> Oatmeal with berries</li>
+            <li class="list-group-item"><strong>Lunch:</strong>Turkey sandwich</li>
+            <li class="list-group-item"><strong>Dinner:</strong>Chicken stir-fry</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <section id="Meal-planning" class="h-100 mb-0">
+          <h2>Meal Planning</h2>
+          <h3>Upcoming Meals</h3>
+          <!-- Component 3: form (label + form-control) and Component 4: button -->
+          <form action="/action_page.php">
+            <label for="plan" class="form-label visually-hidden">What you plan to cook this week</label>
+            <textarea id="plan" class="form-control" name="message" rows="10" cols="30">List what you plan to cook this week</textarea>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+          </form>
+        </section>
+      </div>
+
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <section id="Week" class="mb-0">
+          <h2>This Week</h2>
+
+          <h3>Monday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Oatmeal with berries</li>
+            <li><strong>Lunch:</strong> Turkey sandwich</li>
+            <li><strong>Dinner:</strong> Chicken stir-fry</li>
+          </ul>
+
+          <h3>Tuesday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Bagel with creamcheese</li>
+            <li><strong>Lunch:</strong> Beef Tacos</li>
+            <li><strong>Dinner:</strong> Chicken parm pasta</li>
+          </ul>
+
+          <h3>Wednesday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Yogurt with granola</li>
+            <li><strong>Lunch:</strong> Chicken parm pasta</li>
+            <li><strong>Dinner:</strong> Dining hall food</li>
+          </ul>
+
+          <h3>Thursday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Cereal</li>
+            <li><strong>Lunch:</strong> Dining hall food</li>
+            <li><strong>Dinner:</strong> Chicken stir-fry</li>
+          </ul>
+
+          <h3>Friday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Granola bar</li>
+            <li><strong>Lunch:</strong> Egg Sandwich</li>
+            <li><strong>Dinner:</strong> Mac and Cheese</li>
+          </ul>
+
+          <h3>Saturday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Brunch with friends</li>
+            <li><strong>Lunch:</strong> Brunch with friends</li>
+            <li><strong>Dinner:</strong> Meatball sub</li>
+          </ul>
+
+          <h3>Sunday</h3>
+          <ul>
+            <li><strong>Breakfast:</strong> Cereal</li>
+            <li><strong>Lunch:</strong> Egg Sandwich</li>
+            <li><strong>Dinner:</strong> Chicken tenders and fries</li>
+          </ul>
+
+        </section>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <section id="Recipes" class="mb-0">
+          <h2>Saved Recipes</h2>
+
+          <!-- Component 5: cards -->
+          <div class="card">
+            <img src="images/Chickenrice.jpeg" class="card-img-top" alt="Chicken and rice with lemon, cucumber, and seasame seeds sprinkled on top">
+            <div class="card-body">
+              <h3 class="card-title">Chicken and Rice</h3>
+            </div>
+          </div>
+          <div class="card">
+            <img src="images/chickenalfredo.jpeg" class="card-img-top" alt="Creamy yellow chicken alfredo with broccoli">
+            <div class="card-body">
+              <h3 class="card-title">Chicken Alfredo</h3>
+            </div>
+          </div>
+          <div class="card">
+            <img src="images/beefstew.jpg" class="card-img-top" alt="Beef in a brown broth with yellow sauce and what looks like basil on top">
+            <div class="card-body">
+              <h3 class="card-title">Beef Stew</h3>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Daily Meal Planner &copy;2026 Natalie Lopresti</p>
+  </footer>
+
+</div>
+
+<!-- LOAD BOOTSTRAP JAVASCRIPT - DO NOT DELETE -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- END LOADING BOOTSTRAP JAVASCRIPT -->
+      
+  </body>
+</html>
