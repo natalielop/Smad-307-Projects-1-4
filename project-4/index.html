@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!--
+    AI Use Disclosure:
+    Tool(s): Claude
+    Purpose: Helped provide inspiration for initial layout design in Project 2, and helped with the inverted triangle grid in the saved recipes section, week rotation of colors, and notebook and gingham patterns. For 3rd project, helped build the Bootstrap 5.3.8 container/row/column layout, choose and add the Bootstrap components (nav, list group, form, button, cards), and make small CSS changes so the components match my colors. For Project 4, Claude reviewed my Project 3 code and found bugs (wrong stylesheet path, leftover CSS from the old polaroid grid), helped create a mobile layout with hamburger menu, top nav bar, collapsing full week section, and recipe carosel. It also helped write a new meal planning form.  
+    
+
+    Human Role: I edited the AI code I took as inspiration and applied the helping code to my own layout after learning how to do it. I also made the final design decisions on everything. In project 4, I tweaked and rejected multiple initual mobile-friendly designs, and prompted my own designs for it to build. 
+
+    =
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Daily Meal Planner">
+    <meta name="author" content="Natalie Lopresti">
+    <title>Daily Meal Planner</title>
+
+    <!-- Google Fonts (moved here from the CSS @import so the fonts start loading sooner) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@400;600&amp;display=swap" rel="stylesheet">
+
+    <!-- Bootstrap v5.3.8 -->
+    <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- END LOADING BOOTSTRAP CSS -->
+
+    <!-- Custom styles (the file lives in the css folder) -->
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <!-- Header + navigation.
+       Phones: the title shrinks into a sticky top bar with a hamburger menu.
+       Tablet/desktop (md and up): big pill title with the nav pills underneath. -->
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md" aria-label="Main navigation">
+      <div class="container-fluid flex-md-column">
+        <h1 class="navbar-brand"><a href="#Today">Daily Meal Planner</a></h1>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Open menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Component 1: nav (now a responsive navbar) -->
+        <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#Today">Today's Meals</a></li>
+            <li class="nav-item"><a class="nav-link" href="#Week">This Week</a></li>
+            <li class="nav-item"><a class="nav-link" href="#Meal-planning">Meal Planning</a></li>
+            <li class="nav-item"><a class="nav-link" href="#Recipes">Saved Recipes</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- One row, reordered by screen size:
+         Phones:  Today -> This Week -> Meal Planning -> Recipes (what you check most comes first)
+         Desktop: Today + Meal Planning side by side, then This Week, then Recipes -->
+    <div class="row g-4">
+
+      <div class="col-12 col-lg-6 order-1">
+        <section id="Today" class="h-100">
+          <h2>Today's Meals</h2>
+          <!-- JS swaps in today's meals from This Week -->
+          <!-- Component 2: list group -->
+          <ul class="list-group">
+            <li class="list-group-item" data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Oatmeal with berries</span></li>
+            <li class="list-group-item" data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Turkey sandwich</span></li>
+            <li class="list-group-item" data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Chicken stir-fry</span></li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="col-12 col-lg-6 order-3 order-lg-2">
+        <section id="Meal-planning" class="h-100">
+          <h2>Meal Planning</h2>
+
+          <!-- Component 3: form (labels + form-select + form-control + btn-check toggles)
+               Component 4: button
+               Pick a day and meal, type what you'll eat, and it updates This Week
+               (and Today's Meals, if you picked today). -->
+          <h3>Change a meal</h3>
+          <form id="planForm" class="plan-form" novalidate>
+            <div class="row g-3">
+              <div class="col-12 col-sm-5 col-lg-12 col-xl-5">
+                <label for="planDay" class="form-label">Day</label>
+                <select id="planDay" class="form-select" name="day">
+                  <option>Monday</option>
+                  <option>Tuesday</option>
+                  <option>Wednesday</option>
+                  <option>Thursday</option>
+                  <option>Friday</option>
+                  <option>Saturday</option>
+                  <option>Sunday</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-7 col-lg-12 col-xl-7">
+                <label for="planMeal" class="form-label">Meal</label>
+                <input id="planMeal" class="form-control" type="text" name="meal" placeholder="e.g. Chicken stir-fry" autocomplete="off">
+              </div>
+              <div class="col-12">
+                <fieldset>
+                  <legend class="form-label">Type of meal</legend>
+                  <!-- Radio buttons styled as tappable pills (Bootstrap btn-check) -->
+                  <div class="meal-types">
+                    <input type="radio" class="btn-check" name="planType" id="typeBreakfast" value="Breakfast" checked>
+                    <label class="btn btn-type type-breakfast" for="typeBreakfast">Breakfast</label>
+
+                    <input type="radio" class="btn-check" name="planType" id="typeLunch" value="Lunch">
+                    <label class="btn btn-type type-lunch" for="typeLunch">Lunch</label>
+
+                    <input type="radio" class="btn-check" name="planType" id="typeDinner" value="Dinner">
+                    <label class="btn btn-type type-dinner" for="typeDinner">Dinner</label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+
+            <!-- Messages for errors and confirmations (read out by screen readers) -->
+            <p id="planStatus" class="plan-status" aria-live="polite"></p>
+
+            <!-- Full-width button on phones (easy thumb target), normal size from md up -->
+            <div class="d-grid d-md-block">
+              <button id="saveMeal" type="submit" class="btn btn-primary is-empty" aria-disabled="true">Save meal</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div class="col-12 order-2 order-lg-3">
+        <section id="Week">
+          <div class="week-heading">
+            <h2>This Week</h2>
+            <!-- Only shown below lg: the full week starts collapsed on smaller screens -->
+            <button id="weekToggle" class="btn btn-soft d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#weekDays" aria-expanded="false" aria-controls="weekDays">Show full week</button>
+          </div>
+
+          <!-- collapse = hidden on phones/tablets until tapped; d-lg-block = always shown on desktop -->
+          <div class="collapse d-lg-block week-days" id="weekDays">
+
+            <h3>Monday</h3>
+            <ul data-day="Monday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Oatmeal with berries</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Turkey sandwich</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Chicken stir-fry</span></li>
+            </ul>
+
+            <h3>Tuesday</h3>
+            <ul data-day="Tuesday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Bagel with cream cheese</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Beef tacos</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Chicken parm pasta</span></li>
+            </ul>
+
+            <h3>Wednesday</h3>
+            <ul data-day="Wednesday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Yogurt with granola</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Chicken parm pasta</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Dining hall food</span></li>
+            </ul>
+
+            <h3>Thursday</h3>
+            <ul data-day="Thursday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Cereal</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Dining hall food</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Chicken stir-fry</span></li>
+            </ul>
+
+            <h3>Friday</h3>
+            <ul data-day="Friday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Granola bar</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Egg sandwich</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Mac and cheese</span></li>
+            </ul>
+
+            <h3>Saturday</h3>
+            <ul data-day="Saturday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Brunch with friends</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Brunch with friends</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Meatball sub</span></li>
+            </ul>
+
+            <h3>Sunday</h3>
+            <ul data-day="Sunday">
+              <li data-meal="Breakfast"><strong>Breakfast:</strong> <span class="meal-name">Cereal</span></li>
+              <li data-meal="Lunch"><strong>Lunch:</strong> <span class="meal-name">Egg sandwich</span></li>
+              <li data-meal="Dinner"><strong>Dinner:</strong> <span class="meal-name">Chicken tenders and fries</span></li>
+            </ul>
+
+          </div>
+        </section>
+      </div>
+
+      <div class="col-12 order-4">
+        <section id="Recipes">
+          <h2>Saved Recipes</h2>
+          <!-- Only on phones, where the recipes scroll sideways -->
+          <p class="recipe-hint d-sm-none">Swipe to see more recipes</p>
+
+          <!-- Component 5: cards.
+               Phones: one swipeable row. Tablet: 2 per row. Desktop: 3 per row. -->
+          <div class="row g-4 justify-content-center recipe-row">
+            <div class="col-10 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <img src="images/Chickenrice.jpeg" class="card-img-top" alt="Chicken and rice with lemon, cucumber, and sesame seeds sprinkled on top">
+                <div class="card-body">
+                  <h3 class="card-title">Chicken and Rice</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-10 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <img src="images/chickenalfredo.jpeg" class="card-img-top" alt="Creamy yellow chicken alfredo with broccoli">
+                <div class="card-body">
+                  <h3 class="card-title">Chicken Alfredo</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-10 col-sm-6 col-lg-4">
+              <div class="card h-100">
+                <img src="images/beefstew.jpg" class="card-img-top" alt="Beef in a brown broth with yellow sauce and what looks like basil on top">
+                <div class="card-body">
+                  <h3 class="card-title">Beef Stew</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Daily Meal Planner &copy;2026 Natalie Lopresti</p>
+  </footer>
+
+<!-- LOAD BOOTSTRAP JAVASCRIPT - DO NOT DELETE -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- END LOADING BOOTSTRAP JAVASCRIPT -->
+
+<script>
+  // 1) On phones, close the hamburger menu after a link is tapped,
+  //    THEN scroll, so the page doesn't jump while the menu is shrinking.
+  const menu = document.getElementById("mainNav");
+  document.querySelectorAll("#mainNav .nav-link").forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      if (!menu.classList.contains("show")) {
+        return; // desktop, or menu already closed: normal link behavior
+      }
+      event.preventDefault();
+      const target = document.querySelector(link.getAttribute("href"));
+      menu.addEventListener("hidden.bs.collapse", function () {
+        target.scrollIntoView();
+      }, { once: true });
+      bootstrap.Collapse.getOrCreateInstance(menu).hide();
+    });
+  });
+
+  // 2) Keep the "Show full week" button text in sync with what it does.
+  const weekDays = document.getElementById("weekDays");
+  const weekToggle = document.getElementById("weekToggle");
+  weekDays.addEventListener("shown.bs.collapse", function () {
+    weekToggle.textContent = "Hide full week";
+  });
+  weekDays.addEventListener("hidden.bs.collapse", function () {
+    weekToggle.textContent = "Show full week";
+  });
+
+  // 3) Meal planning: change a meal in This Week, and Today's Meals shows today's day.
+  //    Changes are saved in the browser (localStorage) so they're still there after a refresh.
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const TYPES = ["Breakfast", "Lunch", "Dinner"];
+  const todayName = DAYS[(new Date().getDay() + 6) % 7]; // getDay() counts Sunday as 0
+
+  const planForm = document.getElementById("planForm");
+  const planDay = document.getElementById("planDay");
+  const planMeal = document.getElementById("planMeal");
+  const planStatus = document.getElementById("planStatus");
+  const saveMeal = document.getElementById("saveMeal");
+
+  // Hides the "Type a meal name first." message
+  let errorTimer;
+  function clearError() {
+    clearTimeout(errorTimer);
+    if (planStatus.classList.contains("is-error")) {
+      planStatus.textContent = "";
+      planStatus.classList.remove("is-error");
+    }
+  }
+
+  // Saved changes look like { "Monday": { "Dinner": "Tacos" } }
+  let changes = loadChanges();
+
+  function loadChanges() {
+    try {
+      const saved = localStorage.getItem("mealChanges");
+      return saved ? JSON.parse(saved) : {};
+    } catch (error) {
+      return {}; // storage blocked or broken: just use the meals in the HTML
+    }
+  }
+
+  function saveChanges() {
+    try {
+      localStorage.setItem("mealChanges", JSON.stringify(changes));
+    } catch (error) {
+      // storage blocked: the change still shows until the page is closed
+    }
+  }
+
+  // Finds one meal in This Week, e.g. Monday + Dinner
+  function weekMeal(day, type) {
+    return document.querySelector('.week-days ul[data-day="' + day + '"] li[data-meal="' + type + '"]');
+  }
+
+  // Put every saved change into This Week
+  function applyChanges() {
+    Object.keys(changes).forEach(function (day) {
+      Object.keys(changes[day]).forEach(function (type) {
+        const meal = weekMeal(day, type);
+        if (meal) {
+          meal.querySelector(".meal-name").textContent = changes[day][type];
+        }
+      });
+    });
+  }
+
+  // Copy today's meals from This Week into Today's Meals
+  function showToday() {
+    TYPES.forEach(function (type) {
+      const todayMeal = document.querySelector('#Today li[data-meal="' + type + '"] .meal-name');
+      todayMeal.textContent = weekMeal(todayName, type).querySelector(".meal-name").textContent;
+    });
+  }
+
+  // Briefly highlight what changed, so you can see it worked
+  function flash(element) {
+    element.classList.remove("just-changed");
+    void element.offsetWidth; // restarts the highlight if you save twice in a row
+    element.classList.add("just-changed");
+  }
+
+  planDay.value = todayName; // start on today's day
+
+  planForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const name = planMeal.value.trim();
+    if (name === "") {
+      planStatus.textContent = "Type a meal name first.";
+      planStatus.classList.add("is-error");
+      planMeal.focus();
+      // only show the message for 2.5 seconds
+      clearTimeout(errorTimer);
+      errorTimer = setTimeout(clearError, 2500);
+      return;
+    }
+
+    const day = planDay.value;
+    const type = planForm.elements.planType.value;
+    changes[day] = changes[day] || {};
+    changes[day][type] = name;
+    saveChanges();
+    applyChanges();
+    showToday();
+
+    flash(weekMeal(day, type));
+    if (day === todayName) {
+      flash(document.querySelector('#Today li[data-meal="' + type + '"]'));
+    }
+
+    planStatus.classList.remove("is-error");
+    planStatus.textContent = day + " " + type.toLowerCase() + " is now " + name + ".";
+    planMeal.value = "";
+    updateSaveButton();
+  });
+
+  // Save meal looks see-through until a meal name is typed.
+  // It can still be tapped, so it can explain what's missing.
+  function updateSaveButton() {
+    const empty = planMeal.value.trim() === "";
+    saveMeal.classList.toggle("is-empty", empty);
+    saveMeal.setAttribute("aria-disabled", empty ? "true" : "false");
+
+    // once you start typing, the "Type a meal name first." message goes away
+    if (!empty) {
+      clearError();
+    }
+  }
+
+  planMeal.addEventListener("input", updateSaveButton);
+
+  applyChanges();
+  showToday();
+  updateSaveButton();
+</script>
+
+  </body>
+</html>
